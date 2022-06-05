@@ -8,5 +8,7 @@ prerequisits
 
 to install run:
 ```
-$ git clone https://github.com/JulianWww/
+$ git clone https://github.com/JulianWww/Matura-AlphaZero-demos
+$ cd Matura-AlphaZero-demos && mkdir build && cd build
+$ cmake .. && make
 ```
