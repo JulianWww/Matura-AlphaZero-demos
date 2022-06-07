@@ -3,6 +3,8 @@
 #include <colormap/palettes.hpp>
 
 #define COLORMAP "jet"
+c10::Device device(MODEL_DEVICE);
+c10::Device cpu_device("cpu");
 
 const static VQ::Point center(HEIGHT/2, HEIGHT/2);
 
@@ -13,12 +15,15 @@ SL::Model::Model() :
   relu(),
   sigm(),
   optim(this->parameters(), OptimizerOptions(LR).momentum(Momentum))
-{}
+{
+  lin1->to(device);
+}
 
 torch::Tensor SL::Model::forward(torch::Tensor x) {
+  x.to(device);
   x = relu(lin1(x));
   x = relu(lin2(x));
-  return sigm(lin3(x));
+  return sigm(lin3(x)).to(cpu_device);
 }
 
 void SL::Model::fit(torch::Tensor x, torch::Tensor y_true) {
