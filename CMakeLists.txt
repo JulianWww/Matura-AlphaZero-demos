@@ -96,24 +96,9 @@ find_package(colormap REQUIRED INTERFACE)
 find_package(wxWidgets REQUIRED gl core base OPTIONAL_COMPONENTS net)
 include(${wxWidgets_USE_FILE})
 
-file(GLOB SharedFiles
-  "include/*"
-  "scr/*"
-)
-file(GLOB UnsupervisedFiles
-  "unsupervised/src/*"
-  "unsupervised/include/*" 
-)
-file(GLOB SupervisedFiles
-  "supervised/src/*"
-  "supervised/include/*"
-)
-
-add_executable(VectorQuantization main.cpp ${SharedFiles} ${UnsupervisedFiles})
 target_include_directories(VectorQuantization PUBLIC "include/" "unsupervised/include")
 target_link_libraries(VectorQuantization PRIVATE ${wxWidgets_LIBRARIES})
 
-add_executable(Supervised supervised.cpp ${SharedFiles} ${SupervisedFiles})
 target_include_directories(Supervised PUBLIC "include/" "supervised/include")
 target_link_libraries(Supervised PRIVATE ${wxWidgets_LIBRARIES} ${TORCH_LIBRARIES})
 target_link_libraries(Supervised INTERFACE ${colormap_DIR})
