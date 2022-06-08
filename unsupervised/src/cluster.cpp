@@ -2,8 +2,18 @@
 #include <climits>
 #include <float.h>
 #include <utils.hpp>
+#include <chrono>
+
+void set_seed() {
+  size_t ms = std::chrono::duration_cast< std::chrono::milliseconds >(
+    std::chrono::system_clock::now().time_since_epoch()
+  ).count();
+  std::cout << "seed: " << std::hex << ms << std::endl;
+  std::srand(ms);
+}
 
 VQ::Cluster::Cluster(const size_t& count, const double& x, const double& y, const std::vector<const wxBrush*>& brushes) { 
+  set_seed();
   this->generatePoints(count, x, y);
   this->generateGroups(x, y, brushes);
 }
