@@ -115,6 +115,9 @@ wxPanel(parent)
   brushes.push_back(wxGREEN_BRUSH);
   brushes.push_back(wxRED_BRUSH);
   brushes.push_back(wxBLUE_BRUSH);
+  brushes.push_back(wxBLACK_BRUSH);
+  brushes.push_back(wxYELLOW_BRUSH);
+  brushes.push_back(wxWHITE_BRUSH);
   this->cluster = new VQ::Cluster(POINT_COUNT, (double)WIDTH, (double)HEIGHT, brushes);
 }
 BasicDrawPane::~BasicDrawPane(){
@@ -136,7 +139,8 @@ void BasicDrawPane::paintNow()
 
 void BasicDrawPane::render( wxDC& dc )
 {
-    this->cluster->update();
+    for (size_t idx=0; idx<SIMITERS; idx++)
+        this->cluster->update();
     
     dc.SetBackground( *wxWHITE_BRUSH );
     dc.SetBrush( *wxBLUE_BRUSH);

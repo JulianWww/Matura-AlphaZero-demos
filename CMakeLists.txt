@@ -1,7 +1,8 @@
 cmake_minimum_required(VERSION 3.0.0)
 project(AlphaZeroDemos VERSION 0.1.0)
-set(CXX_STANDARD 14)
-set(CMAKE_CXX_COMPILER "/usr/bin/gcc")
+set(CXX_STANDARD 20)
+set(CMAKE_BUILD_TYPE Debug)
+#set(CMAKE_CXX_COMPILER "/usr/bin/gcc")
 
 include(CTest)
 enable_testing()
@@ -24,13 +25,13 @@ add_executable(Supervised supervised.cpp ${SharedFiles} ${SupervisedFiles})
 
 # Settting model device macro
 find_package(CUDA 11.3)
-message(STATUS ${CUDA_VERSION_STRING})
+message(STATUS "Using cuda: " ${CUDA_VERSION_STRING})
 
 
-if (NOT CUDA_VERSION_STRING EQUAL "")
+if (CUDA_VERSION_STRING EQUAL "")
   target_compile_definitions(Supervised PUBLIC MODEL_DEVICE="cpu")
 else()
-target_compile_definitions(Supervised PRIVATE DEVICE="cuda:0")
+  target_compile_definitions(Supervised PRIVATE MODEL_DEVICE="cuda:0")
 endif()
 
 # Download libtorch from offical website
@@ -75,11 +76,11 @@ else()
   message(STATUS "libtorch installed")
 endif()
 message(STATUS "libtorch Path:\t" "${PROJECT_SOURCE_DIR}/dependencies/libtorch")
-set (Torch_DIR "${PROJECT_SOURCE_DIR}/dependencies/libtorch/share/cmake/Torch")
+set (CMAKE_PREFIX_PATH "${PROJECT_SOURCE_DIR}/dependencies/libtorch/")
 
 
 find_package(Torch REQUIRED Torch_DIR)
-set(DCMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${TORCH_CXX_FLAGS}")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${TORCH_CXX_FLAGS}")
 
 find_package(colormap REQUIRED INTERFACE)
 
@@ -93,7 +94,7 @@ target_include_directories(Supervised PUBLIC "include/" "supervised/include")
 target_link_libraries(Supervised PRIVATE ${wxWidgets_LIBRARIES} ${TORCH_LIBRARIES})
 target_link_libraries(Supervised INTERFACE ${colormap_DIR})
 message(STATUS "colormap at: " ${colormap_DIR})
-#set_property(TARGET Supervised PROPERTY CXX_STANDARD 23)
+set_property(TARGET Supervised PROPERTY CXX_STANDARD 23)
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})

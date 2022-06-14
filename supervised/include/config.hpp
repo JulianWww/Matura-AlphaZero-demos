@@ -2,8 +2,8 @@
 
 #define HEIGHT        500
 #define WIDTH         500
-#define RES_HEIGHT    100
-#define RES_WIDTH     100
+#define RES_HEIGHT    500
+#define RES_WIDTH     500
 #define POINT_RADIUS  10
 #define CIRC_RADIUS   200
 #define BATCH_SIZE    1024

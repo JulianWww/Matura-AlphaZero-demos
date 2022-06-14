@@ -16,14 +16,20 @@ SL::Model::Model() :
   sigm(),
   optim(this->parameters(), OptimizerOptions(LR).momentum(Momentum))
 {
-  lin1->to(device);
+  std::cout <<device << std::endl;
+  lin1->to(device, true);
+  lin2->to(device, true);
+  lin3->to(device, true);
+  relu->to(device, true);
+  sigm->to(device, true);
 }
 
 torch::Tensor SL::Model::forward(torch::Tensor x) {
-  x.to(device);
+  x = x.to(device, true);
   x = relu(lin1(x));
   x = relu(lin2(x));
-  return sigm(lin3(x)).to(cpu_device);
+  x = sigm(lin3(x)).to(cpu_device, true);
+  return x;
 }
 
 void SL::Model::fit(torch::Tensor x, torch::Tensor y_true) {
