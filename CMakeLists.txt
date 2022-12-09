@@ -39,7 +39,7 @@ if (EXISTS "${PROJECT_SOURCE_DIR}/dependencies/libtorch.zip" OR EXISTS "${PROJEC
   message(STATUS "libtorch already downloaded")
 else ()
   if (CUDA_VERSION_STRING EQUAL "")
-	  message(STATUS "did not find cuda11.3 +")
+	  message(STATUS "did not find cuda 11.3 +")
     message(STATUS "downloading libtorch cpu")
     file(
       DOWNLOAD
